@@ -21,10 +21,11 @@ class Product extends Model
     public function getImagesAttribute($value)
 {
     // Get the image file names from the storage folder
-    $imageFiles = \Storage::files('public/products');
+    $imageFiles = json_decode($value);
 
     // Map each file name to its public URL
-    return collect($imageFiles)->map(function ($file) {
+
+        return collect($imageFiles)->map(function ($file) {
         // Convert the storage path to a public URL
         return \Storage::url($file);
     });
