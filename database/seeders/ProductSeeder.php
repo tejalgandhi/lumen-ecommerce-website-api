@@ -1,9 +1,8 @@
 <?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 
 class ProductSeeder extends Seeder
 {
@@ -14,7 +13,10 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        Product::factory()->count(2)->create();
+        // Define the number of products you want to create
+        $numberOfProducts = 3;
 
+        // Create products using the factory
+        \App\Models\Product::factory()->count($numberOfProducts)->create();
     }
 }

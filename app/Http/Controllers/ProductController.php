@@ -29,6 +29,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validatedData = $this->validate($request, [
+            'category_id'=>'required',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
@@ -49,12 +50,13 @@ class ProductController extends Controller
             $filename = 'image_' . $index . '_' . $uniqueId . '.' . $image->getClientOriginalExtension();
 
             // Store the image in the storage directory
-            Storage::putFileAs('public/products', $image, $filename);
+            Storage::putFileAs('/products', $image, $filename);
 
             // Store the path or filename in the array
             $imagePaths[] = $filename;
         }
         $product = Product::create([
+            'category_id'=>$request->category_id,
             'title'=>$request->title,
             'description'=>$request->description,
             'price'=>$request->price,

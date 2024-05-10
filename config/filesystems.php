@@ -45,7 +45,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage/public/products',
+            'url' => env('APP_URL').'/storage/products',
             'visibility' => 'public',
         ],
         // Add other disk configurations if needed

@@ -10,6 +10,7 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
+        'category_id',
         'title',
         'description',
         'price',
@@ -17,7 +18,10 @@ class Product extends Model
         'status',
         'images',
     ];
-
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
     public function getImagesAttribute($value)
 {
     // Get the image file names from the storage folder

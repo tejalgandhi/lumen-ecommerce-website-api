@@ -34,11 +34,12 @@ class ProductFactory extends Factory
 
 
             // Remove the path prefix before storing in $imagePaths
-            $imagePaths[] = str_replace(storage_path('app/public/'), '', $imagePath);
+            $imagePaths[] = str_replace(storage_path('app/public/products/'), '', $imagePath);
         }
 
         return [
             'title' => $this->faker->name,
+            'category_id'=>rand(1,5),
             'description' => $this->faker->sentence(45),
             'price' => $this->faker->randomNumber(2),
             'status' => $this->faker->boolean(),
