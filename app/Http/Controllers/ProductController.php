@@ -15,7 +15,14 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(10);
+        $category_name = \request()->category;
+        if($category_name){
+            $products = Product::whereHas('category',function ($q) use($category_name){
+                $q->where('name',$category_name);
+            })->orderBy('id', 'DESC')->paginate(10);
+        } else {
+            $products = Product::orderBy('id', 'DESC')->paginate(10);
+        }
         return $this->response('Products retrieved successfully.', $products,200 );
 
     }
