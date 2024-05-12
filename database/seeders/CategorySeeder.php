@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class CategorySeeder extends Seeder
 {
@@ -13,6 +16,9 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
+        Schema::disableForeignKeyConstraints();
+        Category::truncate();
+        Schema::enableForeignKeyConstraints();
         // Define categories data
         $categories = [
             ['name' => 'Electronics'],
