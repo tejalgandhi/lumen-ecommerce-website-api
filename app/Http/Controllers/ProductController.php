@@ -16,11 +16,12 @@ class ProductController extends Controller
     public function index()
     {
         $category_name = \request()->category;
+        $postsPerPage = \request()->postsPerPage? \request()->postsPerPage:3;
         $products = $category_name
             ?  $products = Product::whereHas('category',function ($q) use($category_name){
                 $q->where('slug',$category_name);
-            })->orderBy('id', 'DESC')->paginate(10)
-            : $products = Product::orderBy('id', 'DESC')->paginate(10);
+            })->orderBy('id', 'DESC')->paginate($postsPerPage)
+            : $products = Product::orderBy('id', 'DESC')->paginate($postsPerPage);
 
         return $this->response('Products retrieved successfully.', $products,200 );
 
