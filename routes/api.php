@@ -15,4 +15,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->get('categories/{id}', 'CategoryController@show');
         $router->put('categories/{id}', 'CategoryController@update');
         $router->delete('categories/{id}', 'CategoryController@destroy');
+    $router->post('user/register', 'AuthController@register');
+
+    $router->group(['prefix' => 'user','middleware' => 'auth:api'], function () use ($router) {
+
+        $router->post('login', 'AuthController@login');
+        $router->post('logout', 'AuthController@logout');
+        $router->post('refresh', 'AuthController@refresh');
+        $router->post('user-profile', 'AuthController@me');
+    });
+
 });
