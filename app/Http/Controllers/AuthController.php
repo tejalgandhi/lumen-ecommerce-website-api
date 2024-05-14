@@ -65,7 +65,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-
+        try{
         $this->validate($request, [
             'email' => 'required|string',
             'password' => 'required|string',
@@ -74,10 +74,17 @@ class AuthController extends Controller
         $credentials = $request->only(['email', 'password']);
 
         if (!$token = Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return $this->response('Unauthorized',[] ,401 );
         }
+            $user = Auth::user();
+            $data = $this->respondWithToken($user);
+            return $this->response('User registered successfully.',$data ,201 );
 
-        return $this->respondWithToken($token);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $error = $e->validator->errors()->first();
+
+            return $this->response($error,[] ,402 );
+        }
     }
 
     /**
