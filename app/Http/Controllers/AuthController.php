@@ -21,6 +21,7 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        try{
         $validatedData =$this->validate($request, [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users|max:255',
@@ -28,6 +29,9 @@ class AuthController extends Controller
             'delivery_address'=>'required',
             'profile_pic' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust validation rules as needed
         ]);
+        if ($validatedData->fails()) {
+            $this->response($validatedData->errors()->first(),[] ,422 );
+        }
 
         $validatedData['password'] = Hash::make($request->password);
         $uniqueId = uniqid();
@@ -46,6 +50,11 @@ class AuthController extends Controller
         $data = $this->respondWithToken($user);
 
         return $this->response('User registered successfully.',$data ,201 );
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $error = $e->validator->errors()->first();
+
+            return $this->response($error,[] ,402 );
+        }
     }
 
     /**
