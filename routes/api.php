@@ -20,10 +20,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
         $router->post('user/login', 'AuthController@login');
 
     $router->group(['prefix' => 'user','middleware' => 'auth:api'], function () use ($router) {
-
         $router->post('logout', 'AuthController@logout');
         $router->post('refresh', 'AuthController@refresh');
         $router->post('user-profile', 'AuthController@me');
+    });
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->post('/cart/{id}', 'CartController@addToCart');
+        $router->post('/cart/remove', 'CartController@removeFromCart');
+        $router->get('/cart', 'CartController@getCart');
     });
 
 });

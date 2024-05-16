@@ -29,9 +29,7 @@ class AuthController extends Controller
             'delivery_address'=>'required',
             'profile_pic' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust validation rules as needed
         ]);
-        if ($validatedData->fails()) {
-            $this->response($validatedData->errors()->first(),[] ,422 );
-        }
+
 
         $validatedData['password'] = Hash::make($request->password);
         $uniqueId = uniqid();
