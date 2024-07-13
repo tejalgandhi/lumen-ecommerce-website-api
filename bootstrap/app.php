@@ -26,12 +26,16 @@ $app = new Laravel\Lumen\Application(
  $app->withFacades();
 
  $app->withEloquent();
+$app->register(App\Providers\AuthServiceProvider::class);
+$app->register(Fruitcake\Cors\CorsServiceProvider::class);
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
 ]);
+$app->middleware([
+    Fruitcake\Cors\HandleCors::class,
+]);
 
-$app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 
 /*
@@ -58,10 +62,6 @@ $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
     App\Console\Kernel::class
 );
-$app->middleware([
-    // Other middleware...
-    App\Http\Middleware\CorsMiddleware::class,
-]);
 
 /*
 |--------------------------------------------------------------------------
