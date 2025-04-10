@@ -29,8 +29,9 @@ class CartController extends Controller
                 'quantity' => $quantity,
             ]);
         }
+        $totalItemQuantity = $cart->items->sum('quantity');
 
-        return response()->json($cart->load('items.product'), 200);
+        return response()->json(['message' => 'Item added successfully.','totalItemQty'=>$totalItemQuantity,'product'=>$cart->load('items.product')],200);
     }
 
     public function removeFromCart(Request $request)
