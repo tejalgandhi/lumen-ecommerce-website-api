@@ -27,6 +27,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->group(['middleware' => 'auth:api'], function () use ($router) {
         $router->post('/cart/remove', 'CartController@removeFromCart');
         $router->post('/cart/add/{id}', 'CartController@addToCart');
+        $router->post('/cart/update/{id}', 'CartController@addToCart');
         $router->get('/cart', 'CartController@getCart');
     });
 

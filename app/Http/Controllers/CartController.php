@@ -69,4 +69,29 @@ class CartController extends Controller
 
 //        return response()->json($cart, 200);
     }
+
+    public function updateCart(Request $request,$id)
+    {
+        $userId = $request->user()->id;
+        $productId = $id;
+        $quantity = $request->input('quantity');
+
+        $cart = Cart::firstOrCreate(['user_id' => $userId]);
+
+        $cartItem = $cart->items()->where('product_id', $productId)->first();
+
+        if ($cartItem) {
+            $cartItem->quantity += $quantity;
+            $cartItem->save();
+        } else {
+            CartItem::updateOrcreate([
+                'cart_id' => $cart->id,
+                'product_id' => $productId,
+                'quantity' => $quantity,
+            ]);
+        }
+        $totalItemQuantity = $cart->items->sum('quantity');
+
+        return response()->json(['message' => 'Item added successfully.','totalItemQty'=>$totalItemQuantity,'product'=>$cart->load('items.product')],200);
+    }
 }
