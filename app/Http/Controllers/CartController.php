@@ -50,8 +50,8 @@ class CartController extends Controller
         if ($cartItem) {
             $cartItem->delete();
         }
-
-        return response()->json($cart->load('items.product'), 200);
+        $totalItemQuantity = $cart->items->sum('quantity');
+        return response()->json(['message' => 'Item removed successfully.','product'=>$cart->load('items.product'),'totalItemQty'=>$totalItemQuantity], 200);
     }
 
     public function getCart(Request $request)
@@ -61,9 +61,12 @@ class CartController extends Controller
         $cart = Cart::where('user_id', $userId)->with('items.product')->first();
 
         if (!$cart) {
-            return response()->json(['message' => 'Cart is empty'], 200);
+            return response()->json(['message' => 'Cart is empty','totalItemQty'=>0], 200);
         }
+        $totalItemQuantity = $cart->items->sum('quantity');
 
-        return response()->json($cart, 200);
+        return response()->json(['message' => 'Get Items','totalItemQty'=>$totalItemQuantity,'product'=>$cart->load('items.product')],200);
+
+//        return response()->json($cart, 200);
     }
 }
