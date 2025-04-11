@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class CartItem extends Model
 {
+    protected $appends = ['total_price'];
+
     protected $fillable = ['cart_id', 'product_id', 'quantity'];
 
     public function cart()
@@ -16,5 +18,9 @@ class CartItem extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+    public function getTotalPriceAttribute()
+    {
+        return $this->quantity * ($this->product ? $this->product->price : 0);
     }
 }
